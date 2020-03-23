@@ -1,8 +1,8 @@
 import numpy as np 
 
-def flipPreds(preds, width):
-    result = np.asarray(preds)
-    result[:, 0] = width - result[:, 0] 
+def flip(array, width, index):
+    result = np.asarray(array)
+    result[:, index] = width - result[:, index] 
     return result
 
 # calculate magnitude of vector
@@ -57,3 +57,14 @@ def coincideLandmarkLR(LP, RP):
    
     return RP
 
+# coincides front_preds(RP) and profile_preds(LP) using tip of the nose
+# using PP's nose point as reference
+def coincideLandmarkFP(FP, PP):
+    nTip = 29 # index of tip of the nose in predictions
+    dx, dy, dz = FP[nTip] - PP[nTip] 
+
+    FP[:, 0] -= dx
+    FP[:, 1] -= dy
+    FP[:, 2] -= dz
+
+    return FP

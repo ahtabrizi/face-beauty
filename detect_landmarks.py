@@ -23,7 +23,7 @@ fig = plt.figure()
 ax = plt.gca()
 drawLandmarksOnFace(ax, right_img, right_preds, color=(1,0,0))
 
-right_preds = flipPreds(right_preds, right_img.shape[1])
+right_preds = flip(right_preds, right_img.shape[1], 0)
 right_preds = coincideLandmarkLR(left_preds, right_preds)
 
 fig = plt.figure()
@@ -41,14 +41,17 @@ ax.invert_yaxis()
 left_preds[:, [0, 2]] = left_preds[:, [2, 0]]
 right_preds[:, [0, 2]] = right_preds[:, [2, 0]]
 
+front_preds = flip(front_preds, np.max(front_preds[:,2]), 2)
+front_preds = coincideLandmarkFP(front_preds, left_preds)
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-drawLandmarks3D(ax, left_preds)
-drawLandmarks3D(ax, right_preds, cPoint=(1,0,0), cLine=(0.7,0.2,0.2))
-drawLandmarks3D(ax, front_preds, cPoint=(0,1,0), cLine=(0.2,0.7,0.2))
+drawLandmarks3D(ax, left_preds, label="Left")
+drawLandmarks3D(ax, right_preds, label="Right", cPoint=(1,0,0), cLine=(0.7,0.2,0.2))
+drawLandmarks3D(ax, front_preds, label="Front",  cPoint=(0,1,0), cLine=(0.2,0.7,0.2))
+
+labelMaker(ax)
 ax.set_xlabel("X")
 ax.set_ylabel("Y")
 ax.set_zlabel("Z")
-
 plt.show()

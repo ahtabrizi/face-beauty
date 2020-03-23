@@ -20,6 +20,18 @@ plot_style = dict(marker='o',
                   markersize=4,
                   linestyle='-',
                   lw=2)
+
+def labelMaker(ax):
+    #remove duplicates
+    handles, labels = ax.get_legend_handles_labels()
+    newLabels, newHandles = [], []
+    for handle, label in zip(handles, labels):
+      if label not in newLabels:
+        newLabels.append(label)
+        newHandles.append(handle)
+
+    ax.legend(newHandles, newLabels)
+
 # 2D-Plot
 def drawLandmarks2D(ax, preds, color=None) :
     for pred_type in pred_types.values():
@@ -35,7 +47,7 @@ def drawLandmarksOnFace(ax, input_img, preds, color=None):
     ax.axis('off')
     
 # 3D-Plot
-def drawLandmarks3D(ax , preds, cPoint='cyan', cLine='blue'):
+def drawLandmarks3D(ax , preds, label=None, cPoint='cyan', cLine='blue'):
 
     surf = ax.scatter(preds[:, 0] * 1.2,
                       preds[:, 1],
@@ -46,7 +58,7 @@ def drawLandmarks3D(ax , preds, cPoint='cyan', cLine='blue'):
     for pred_type in pred_types.values():
         ax.plot3D(preds[pred_type.slice, 0] * 1.2,
                   preds[pred_type.slice, 1],
-                  preds[pred_type.slice, 2], color=cLine)
+                  preds[pred_type.slice, 2], color=cLine, label=label)
 
     ax.view_init(elev=89., azim=90.)
     ax.set_xlim(ax.get_xlim()[::-1])
