@@ -21,14 +21,15 @@ plot_style = dict(marker='o',
                   linestyle='-',
                   lw=2)
 # 2D-Plot
-def drawLandmarks2D(ax, preds) :
+def drawLandmarks2D(ax, preds, color=None) :
     for pred_type in pred_types.values():
         ax.plot(preds[pred_type.slice, 0],
                 preds[pred_type.slice, 1],
                 color=pred_type.color, **plot_style)
+        if color is not None:
+            ax.get_lines()[-1].set_color(color)
 
-
-def drawLandmarksOnFace(input_img, preds, fig=None):
+def drawLandmarksOnFace(input_img, preds, fig=None, color=None):
     if fig is None:
         fig = plt.figure()
         ax = plt.gca()
@@ -37,10 +38,10 @@ def drawLandmarksOnFace(input_img, preds, fig=None):
 
     ax.imshow(input_img)
 
-    drawLandmarks2D(ax, preds)
+    drawLandmarks2D(ax, preds, color)
 
     ax.axis('off')
-    return fig
+    return fig, ax
     
 # 3D-Plot
 def drawLandmarks3D(preds, fig=None):
