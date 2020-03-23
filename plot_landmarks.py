@@ -29,41 +29,25 @@ def drawLandmarks2D(ax, preds, color=None) :
         if color is not None:
             ax.get_lines()[-1].set_color(color)
 
-def drawLandmarksOnFace(input_img, preds, fig=None, color=None):
-    if fig is None:
-        fig = plt.figure()
-        ax = plt.gca()
-    else:
-        ax = fig.add_subplot(1, 2, 1)
-
+def drawLandmarksOnFace(ax, input_img, preds, color=None):
     ax.imshow(input_img)
-
     drawLandmarks2D(ax, preds, color)
-
     ax.axis('off')
-    return fig, ax
     
 # 3D-Plot
-def drawLandmarks3D(preds, fig=None):
-    if fig is None:
-        fig = plt.figure(projection='3d')
-        ax = plt.gca()
-    else:
-        ax = fig.add_subplot(1, 2, 2, projection='3d')
+def drawLandmarks3D(ax , preds, cPoint='cyan', cLine='blue'):
 
     surf = ax.scatter(preds[:, 0] * 1.2,
                       preds[:, 1],
                       preds[:, 2],
-                      c='cyan',
+                      color=cPoint,
                       alpha=1.0,
                       edgecolor='b')
     for pred_type in pred_types.values():
         ax.plot3D(preds[pred_type.slice, 0] * 1.2,
                   preds[pred_type.slice, 1],
-                  preds[pred_type.slice, 2], color='blue')
+                  preds[pred_type.slice, 2], color=cLine)
 
     ax.view_init(elev=89., azim=90.)
     ax.set_xlim(ax.get_xlim()[::-1])
-
-    return fig
 
