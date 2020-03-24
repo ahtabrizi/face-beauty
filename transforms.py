@@ -19,7 +19,10 @@ def rotationMatrix(v1, v2):
     Raxis = np.cross(v1, v2, axis=0) /(mag(v1) * mag(v2))
     sint = mag(Raxis)
     cost = np.dot(v1, v2) /(mag(v1) * mag(v2))
-
+    
+    if np.abs(sint) < 0.01:
+        return np.eye(3)
+    
     K = skew(Raxis / sint)
 
     # using rodriguez formula (a bit modified)
