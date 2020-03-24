@@ -2,6 +2,19 @@ import numpy as np
 from transforms import mag
 from plot_landmarks import *
 
+def crit1(preds):
+    A = preds[36, 0]
+    B = preds[39, 0]
+    C = preds[42, 0]
+    D = preds[45, 0]
+
+    AB = B - A
+    BC = C - B
+    CD = C - D
+    
+    AD = AB + BC + CD
+
+    return AB/AD, BC/AD, CD/AD
 
 def crit3(preds):
     A = preds[8, 1]
@@ -13,7 +26,7 @@ def crit3(preds):
     BC = B - C
     CD = C - D
 
-    return [AB, BC, AB+BC, CD]
+    return AB/BC, (AB+BC)/CD
 
 def crit4(preds):
     p1 = (preds[35, 2] + preds[31, 2]) / 2 # B
@@ -65,6 +78,7 @@ def crit8(preds):
     v2 = p3 - p1
 
     return np.degrees(np.arccos(np.dot(v1, v2) / (mag(v1) * mag(v2))))
+
 LRFP = np.load("post/data/landmarks#247.npy")
 LRFP2 = np.load("post/data/landmarks#347.npy")
 print(crit3(LRFP))
