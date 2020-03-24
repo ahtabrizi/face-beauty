@@ -45,12 +45,14 @@ front_preds = flip(front_preds, np.max(front_preds[:,2]), 2)
 front_preds = coincideLandmarkFP(front_preds, left_preds)
 
 P = mergeLR(left_preds, right_preds)
+LRFP = mergeLandmarks(left_preds, right_preds, front_preds)
 
 fig = plt.figure()
 ax = plt.axes(projection='3d')
-drawLandmarks3D(ax, left_preds, label="Left")
-drawLandmarks3D(ax, right_preds, label="Right", cPoint=(1,0,0), cLine=(0.7,0.2,0.2))
+#drawLandmarks3D(ax, left_preds, label="Left")
+#drawLandmarks3D(ax, right_preds, label="Right", cPoint=(1,0,0), cLine=(0.7,0.2,0.2))
 #drawLandmarks3D(ax, P, label="LR",  cPoint=(1,1,0), cLine=(0.7,0.5,0.7))
+drawLandmarks3D(ax, LRFP, label="LRFP")
 #drawLandmarks3D(ax, front_preds, label="Front",  cPoint=(0,1,0), cLine=(0.2,0.7,0.2))
 
 i = 0 
