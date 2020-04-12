@@ -79,13 +79,22 @@ def crit8(preds):
 
     return np.degrees(np.arccos(np.dot(v1, v2) / (mag(v1) * mag(v2))))
 
-LRFP = np.load("post/data/landmarks#247.npy")
-LRFP2 = np.load("post/data/landmarks#347.npy")
-print(crit3(LRFP))
+def lips(preds):
+    A = preds[48, 0]
+    B = preds[54, 0]
+    C = preds[57, 1]
+    D = preds[50, 1]
+
+    AB = A - B
+    DC = D - C
+    print(AB, DC)
+
+    return DC / AB
+LRFP = np.load("post/data/landmarks#333.npy")
+print(lips(LRFP))
 fig = plt.figure()
 ax = plt.axes(projection='3d')
 
 drawLandmarks3D(ax, LRFP)
-drawLandmarks3D(ax, LRFP2)
 
 plt.show()
