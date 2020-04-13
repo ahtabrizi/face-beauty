@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np 
 
 filename = 'pre'
-data = pd.read_csv(filename + ".csv")
+data = pd.read_csv("labels/" + filename + "/" + filename + ".csv")
 data = data.iloc[:, 1:33]
 data.fillna(0, inplace=True)
 
@@ -17,7 +17,7 @@ df[['skin_white','skin_sabze', 'skin_gandom']] = data.iloc[:, 2:5]
 # eye color 
 df[['eyecolor_blue', 'eyecolor_green', 'eyecolor_tusi', 'eyecolor_asali', 'eyecolor_brown', 'eyecolor_black']] = data.iloc[:, 5:11]
 # eye size
-df[['eyesize_r', 'eyesize_m', 'nose_flat']] = data.iloc[:, 11:14]
+df[['eyesize_d', 'eyesize_r', 'eyesize_m']] = data.iloc[:, 11:14]
 # nose flatness
 df['nose_flat'] = data.iloc[:, 14] + data.iloc[:, 16]
 # nose type
@@ -41,6 +41,6 @@ df['chin'] = data.iloc[:,31]
 df = df.astype(int)
 # print(df.dtypes)
 
-df.to_csv(filename + "_processed.csv", encoding='utf-8', sep=',', index=False)
+df.to_csv("labels/" + filename + "/labels.csv", encoding='utf-8', sep=',', index=False)
 print(df.head())
 # print(df.columns)
