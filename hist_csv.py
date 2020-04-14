@@ -6,8 +6,8 @@ data = pd.read_csv("labels/" + filename + "/labels.csv")
 
 print("Labels for " + filename.upper())
 hist = {}
-for c in data.columns:
+for i, c in enumerate(data.columns):
    hist[c] = data[c].sum() 
-   print(c, " --- ", hist[c])
+   print(i + 1, c, " --- ", hist[c])
 
 

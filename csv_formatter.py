@@ -1,7 +1,7 @@
 import pandas as pd
 import numpy as np 
 
-filename = 'pre'
+filename = 'post'
 data = pd.read_csv("labels/" + filename + "/" + filename + ".csv")
 data = data.iloc[:, 1:33]
 data.fillna(0, inplace=True)
@@ -15,7 +15,10 @@ df['roundness'] = data.iloc[:, 0]
 # skin color
 df[['skin_white','skin_sabze', 'skin_gandom']] = data.iloc[:, 2:5]
 # eye color 
-df[['eyecolor_blue', 'eyecolor_green', 'eyecolor_tusi', 'eyecolor_asali', 'eyecolor_brown', 'eyecolor_black']] = data.iloc[:, 5:11]
+df['eyecolor_other'] = data.iloc[:, 5] + data.iloc[:, 6] + data.iloc[:, 7] + data.iloc[:, 8]
+df[['eyecolor_brown', 'eyecolor_black']] = data.iloc[:, 9:11]
+
+# df[['eyecolor_blue', 'eyecolor_green', 'eyecolor_tusi', 'eyecolor_asali', 'eyecolor_brown', 'eyecolor_black']] = data.iloc[:, 5:11]
 # eye size
 df[['eyesize_d', 'eyesize_r', 'eyesize_m']] = data.iloc[:, 11:14]
 # nose flatness
