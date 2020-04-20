@@ -8,14 +8,50 @@ from transforms import *
 # Run the 3D face alignment on a test image, without CUDA.
 FA = face_alignment.FaceAlignment(face_alignment.LandmarksType._3D, device='cpu', flip_input=False)
 
-i = 1 
-left_img = io.imread('post/Case#'+ str(i) + '_3_L_post.png')[:, :, :3]
-right_img = io.imread('post/Case#'+ str(i) + '_2_R_post.png')[:, :, :3]
-front_img = io.imread('post/Case#'+ str(i) + '_1_F_post.png')[:, :, :3]
-#plt.imshow(front_img)
-#plt.show()
-left_preds = np.asarray(FA.get_landmarks(left_img)[-1])
-right_preds = np.asarray(FA.get_landmarks(right_img)[-1])
+BASE_DIR = "./data/pre/"
+i = 98 
+left_img = io.imread(BASE_DIR + 'Case#'+ str(i) + '_3_L_pre_Pa_Ro_Sc.png')[180:900, :, :3]
+right_img = io.imread(BASE_DIR + 'Case#'+ str(i) + '_2_R_pre_Pa_Ro_Sc.png')[180:900, :, :3]
+front_img = io.imread(BASE_DIR + 'Case#'+ str(i) + '_1_F_pre_Pa_Ro_Sc_Tr_Ep.png')[240:750, 110:610, :3]
+plt.imshow(right_img)
+plt.figure()
+plt.imshow(left_img)
+plt.show()
+
+left_not_detected = False 
+left_flipped = False 
+print("left")
+try:
+    left_preds = np.asarray(FA.get_landmarks(left_img)[-1])
+except:
+    try:
+        left_preds = np.asarray(FA.get_landmarks(left_img[:, ::-1, :])[-1])
+        left_preds = flip(left_preds, left_img.shape[1], 0)
+        left_flipped = True
+    except:
+        left_not_detected = True
+        # raise "Cannot find face in left image"
+print("right")
+try:
+    right_preds = np.asarray(FA.get_landmarks(right_img)[-1])
+    if left_not_detected:
+        left_preds = right_preds.copy()
+        left_preds = flip(left_preds, left_img.shape[1], 0)
+except:
+    try:
+        right_preds = np.asarray(FA.get_landmarks(right_img[:, ::-1, :])[-1])
+        if left_not_detected:
+            left_preds = right_preds.copy()
+        right_preds = flip(right_preds, right_img.shape[1], 0)
+    except:
+        if left_not_detected:
+            raise "Cannot find face in right image"
+        else:
+            right_preds = left_preds.copy()
+            if not left_flipped:
+                right_preds = flip(right_preds, right_img.shape[1], 0)
+    
+print("front")
 front_preds =  np.asarray(FA.get_landmarks(front_img)[-1])    
 
 print("PLOTTING")
@@ -23,9 +59,11 @@ print("PLOTTING")
 # Plot 2D on Face, left and Right 
 fig = plt.figure()
 ax = plt.gca()
+ax.set_title("Left View")
 drawLandmarksOnFace(ax, left_img, left_preds, color=(1,0,0))
 fig = plt.figure()
 ax = plt.gca()
+ax.set_title("Right View")
 drawLandmarksOnFace(ax, right_img, right_preds, color=(1,0,0))
 
 right_preds = flip(right_preds, right_img.shape[1], 0)
