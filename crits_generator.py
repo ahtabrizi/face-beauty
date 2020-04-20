@@ -12,15 +12,18 @@ for TAG_NAME in ["pre", "post"]:
 
     paths = []
     paths.extend(glob.glob("data/" + TAG_NAME + "/data/*.npy"))
-
+    paths = sorted(paths)
     
     df = pd.DataFrame(columns=['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-    for i, path in enumerate(paths):
+    for i in range(376):
+        df.loc[i] = [0, 0, 0, 0, 0, 0, 0, 0, 0]
+    for path in paths:
         isMale = False
-        if i in males:
+        nb = path.split("/")[-1].split("#")[-1].split(".")[0]
+        if nb in males:
             isMale = True
         LRFP = np.load(path)
-        df.loc[i] = [ pcrit1(LRFP),
+        df.loc[int(nb)-1] = [ pcrit1(LRFP),
                       0,
                       pcrit3(LRFP),
                       pcrit4(LRFP),
@@ -31,5 +34,5 @@ for TAG_NAME in ["pre", "post"]:
                       0]
     
 
-    df.to_csv(SAVE_NAME, encoding='utf-8', sep=',', index=False)
+    df.to_csv(SAVE_NAME, encoding='utf-8', sep=',', index=False, header=False)
 
