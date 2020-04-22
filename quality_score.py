@@ -36,9 +36,9 @@ def processRow(row):
 def scoreTable(indices, tables, isMale=False):
     i, j = indices
     if isMale:
-        return (np.asarray(tables['W2M'].iloc[i,j]) + np.asarray(tables['M2M'].iloc[i,j])) / 2 
+        return (0.6 * np.asarray(tables['W2M'].iloc[i,j]) + 0.4 * np.asarray(tables['M2M'].iloc[i,j])) 
     else:                                              
-        return (np.asarray(tables['M2W'].iloc[i,j]) + np.asarray(tables['W2W'].iloc[i,j])) / 2 
+        return (0.6 * np.asarray(tables['M2W'].iloc[i,j]) + 0.4 * np.asarray(tables['W2W'].iloc[i,j])) 
         
 def scoreNonTable(NT):
     score = np.zeros(len(NT))
